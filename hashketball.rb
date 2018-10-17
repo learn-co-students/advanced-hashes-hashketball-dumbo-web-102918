@@ -3,7 +3,7 @@
 def game_hash
   game_hash = {
 :home => {
-  team_name: "Brooklyn Nets", 
+  :team_name => "Brooklyn Nets", 
   :colors => ["Black", "White"], 
   :players => {
     "Alan Anderson" => {
@@ -17,7 +17,7 @@ def game_hash
     "Jason Terry" => {
       number: 31, shoe: 15, points: 19, rebounds: 2, assists: 2, steals: 4, blocks: 11, slam_dunks: 1}}}, 
 :away => {
-  team_name: "Charlotte Hornets", 
+  :team_name => "Charlotte Hornets", 
   :colors => ["Turquoise", "Purple"], 
   :players => {
     "Jeff Adrien" => {
