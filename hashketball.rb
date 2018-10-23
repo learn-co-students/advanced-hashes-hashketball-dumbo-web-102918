@@ -117,4 +117,13 @@ def game_hash
   }
 end
 
+def num_points_scored (name)
+  game_hash.each |location, information_catagories|
+  binding.pry
+   if information_catagories[:players] == name 
+     puts "hi"
+     
+    end 
+  end
+end 
 
