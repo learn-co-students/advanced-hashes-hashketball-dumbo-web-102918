@@ -176,4 +176,10 @@ end
 end 
 
 def big_shoe_rebounds
-  value = []
+  value = {}
+  game_hash.each do |location, information_catagories|
+   information_catagories[:players].each do |player, info|
+   if info[:shoe] > value[:size] || value.empty?
+    end 
+  end
+end 
