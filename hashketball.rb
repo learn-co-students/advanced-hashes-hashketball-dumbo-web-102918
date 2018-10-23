@@ -153,13 +153,13 @@ def team_names
   value
 end 
   
-def team_names
+def player_numbers
  value = []
  game_hash.each do |location, information_catagories|
-   information_catagories[:players].each |player, |
-   [:number]
-    value << information_catagories[:team_name]
+   information_catagories[:players].each do |player, info|
+     value << info[:number]
   end
+end 
   value
 end 
 
