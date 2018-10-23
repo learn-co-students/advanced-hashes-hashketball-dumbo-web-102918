@@ -146,11 +146,21 @@ def team_colors (name)
 end
 
 def team_names
-  value = ""
+  value = []
   game_hash.each do |location, information_catagories|
     value << information_catagories[:team_name]
   end
   value
 end 
   
+def team_names
+ value = []
+ game_hash.each do |location, information_catagories|
+   information_catagories[:players].each |player, |
+   [:number]
+    value << information_catagories[:team_name]
+  end
+  value
+end 
+
 
