@@ -145,3 +145,12 @@ def team_colors (name)
   end 
 end
 
+def team_names
+  value = ""
+  game_hash.each do |location, information_catagories|
+    value << information_catagories[:team_name]
+  end
+  value
+end 
+  
+
