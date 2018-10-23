@@ -153,12 +153,14 @@ def team_names
   value
 end 
   
-def player_numbers
+def player_numbers(name)
  value = []
  game_hash.each do |location, information_catagories|
+   if information_catagories[:team_name] == name
    information_catagories[:players].each do |player, info|
      value << info[:number]
   end
+end 
 end 
   value
 end 
