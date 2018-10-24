@@ -1,4 +1,4 @@
-# Write your code here!
+require 'pry'
 def game_hash
    {
  :home => {
@@ -119,12 +119,47 @@ def game_hash
 }
 end
 
+def good_practices
+  game_hash.each do |location, team_data|
+    #are you ABSOLUTELY SURE what 'location' and 'team data' are? use binding.pry to find out!
+    binding.pry
+      team_data.each do |attribute, data|
+        #are you ABSOLUTELY SURE what 'attribute' and 'team data' are? use binding.pry to find out!
+        binding.pry
+ 
+        #what is 'data' at each loop through out .each block? when will the following line of code work and when will it break?
+        data.each do |data_item|
+            binding.pry
+      end
+    end
+  end
+end
+#(good_practices)
+'def num_points_scored(name)
+  game_hash.each do |location, team_data|
+    team_data.each do |attribute|
+      attribute.fetch(:player_name)
+       #binding.pry
+end
+end
+end'
 
+def players
+  home_players = game_hash[:home][:players]
+  away_players = game_hash[:away][:players]
+  total_players = home_players + away_players
+  total_players
+end
 
+def num_points_scored(name)
+  find_player = players.find {|player| player.fetch(:player_name) == name }
+  point = find_player.fetch(:points)
+  point.to_i
+end
 
-
-
-
-
-
+def shoe_size(name)
+  find_player = players.find {|player| player.fetch(:player_name) == name }
+  size = find_player.fetch(:shoe)
+  size.to_i
+end
 
