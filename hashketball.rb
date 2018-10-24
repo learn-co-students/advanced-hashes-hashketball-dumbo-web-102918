@@ -201,7 +201,20 @@ def player_numbers(team_name)
   end 
 end
 
-
+def player_stats(player_name)
+ stats= players.find {|player| player.fetch(:player_name) == player_name}
+ #binding.pry
+  stats.delete_if {|info, string| info == :player_name}
+  
+  #binding.pry
+end
+ def player_by_number(number)
+  find_player_by_number = players.find {|player| player.fetch(:number) == number }
+  #binding.pry
+  by_number = find_player_by_number.fetch(:player_name)
+  #binding.pry
+ end
+    #player_by_number("11")
 
 
 
