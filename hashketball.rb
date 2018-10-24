@@ -147,13 +147,16 @@ end'
 def players
   home_players = game_hash[:home][:players]
   away_players = game_hash[:away][:players]
+  #binding.pry
   total_players = home_players + away_players
   total_players
 end
 
 def num_points_scored(name)
   find_player = players.find {|player| player.fetch(:player_name) == name }
+  #binding.pry
   point = find_player.fetch(:points)
+  #binding.pry
   point.to_i
 end
 
