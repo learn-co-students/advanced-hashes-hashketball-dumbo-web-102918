@@ -145,12 +145,15 @@ end
 end'
 
 def players
-  home_players = game_hash[:home][:players]
-  away_players = game_hash[:away][:players]
   #binding.pry
+  home_players = game_hash[:home][:players]
+  #binding.pry
+  away_players = game_hash[:away][:players]
+#binding.pry
   total_players = home_players + away_players
   total_players
 end
+#players
 
 def num_points_scored(name)
   find_player = players.find {|player| player.fetch(:player_name) == name }
@@ -166,3 +169,13 @@ def shoe_size(name)
   size.to_i
 end
 
+def team_inf 
+  home_team = game_hash.values_at(:home)
+#binding.pry
+  away_team = game_hash.values_at(:away)
+#binding.pry
+  total_team_inf = home_team + away_team
+  total_team_inf
+binding.pry
+end 
+#team_inf
