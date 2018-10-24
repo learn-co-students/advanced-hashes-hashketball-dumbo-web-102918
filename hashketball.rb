@@ -193,6 +193,13 @@ def team_names
   end
 end
 
+def player_numbers(team_name)
+  find_numbers = team_inf.find {|team| team.fetch(:team_name) == team_name}
+  find_numbers[:players].collect do |player| 
+    numbers = player[:number]
+  numbers.to_i
+  end 
+end
 
 
 
