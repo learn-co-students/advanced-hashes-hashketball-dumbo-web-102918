@@ -176,6 +176,25 @@ def team_inf
 #binding.pry
   total_team_inf = home_team + away_team
   total_team_inf
-binding.pry
+#binding.pry
 end 
 #team_inf
+def team_colors(team_name)
+  find_team = team_inf.find {|team| team.fetch(:team_name) == team_name}
+  #binding.pry
+  find_team.fetch(:colors)
+  #binding.pry
+end
+
+def team_names 
+  team_inf.collect do |team|
+    #binding.pry
+    team[:team_name]
+  end
+end
+
+
+
+
+
+
