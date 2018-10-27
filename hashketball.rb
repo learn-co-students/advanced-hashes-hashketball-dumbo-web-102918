@@ -258,7 +258,7 @@ def big_shoe_rebounds
        results.each do |name, stats|
          stats.each do |statistic, value|
            if value == shoe_sizes.last && statistic == :shoe
-             return 12
+             return stats[:rebounds]
            end
          end
        end
