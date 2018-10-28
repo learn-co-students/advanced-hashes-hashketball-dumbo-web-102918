@@ -161,16 +161,19 @@ def team_names
 end
 
 def player_numbers(team_name)
+numbers = []
   game_hash.each do |team, game_data|
     if game_data[:team_name] == team_name
-      game_data[:players].collect do |player, player_data|
+      game_data[:players].each do |player, player_data|
         player_data.collect do |category, number|
-        binding.pry
-        player[:number]
+        if category == :number
+          numbers.push(player_data[:number])
         end
       end
     end
   end
+end
+  numbers
 end
 
 def player_stats(player_name)
@@ -186,4 +189,24 @@ end
 
 def big_shoe_rebounds
 #return number of rebounds associated with the player with the largest shoe size
+#First, find the player with the largest shoe size
+#Then, return that player's number of rebounds
+#k = location
+#v = team_data
+#k2 = player
+#v2 = stats
+shoe_sizes = []
+  game_hash.collect do |k, v|
+      v[:players].collect do |k2, v2|
+         shoe_sizes <<v2[:shoe]
+     end
+  end
+
+  game_hash.each do |k, v|
+     game_hash[k][:players].each do |k2, v2|
+        if  game_hash[k][:players][k2][:shoe] == shoe_sizes.max
+          return game_hash[k][:players][k2][:rebounds]
+        end
+     end
+  end
 end
