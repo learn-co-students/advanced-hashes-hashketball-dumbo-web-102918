@@ -207,7 +207,7 @@ def player_stats(player_name)
    stats.delete_if {|info, string| info == :player_name}
   #binding.pry
 end
-end
+#end
  def player_by_number(number)
   find_player_by_number = players.find {|player| player.fetch(:number) == number }
   #binding.pry
@@ -216,5 +216,18 @@ end
  end
     #player_by_number("11")
 
+def most_points_scored
+  num_points = 0
+  player_name = ""
+  players.each do |value|
+    if value[:points].to_i > num_points
+      player_name = value[:player_name]
+      num_points = value[:points].to_i
+    end
+    # binding.pry
+  end
+  player_name
+end
 
+most_points_scored
 
