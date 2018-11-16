@@ -202,3 +202,81 @@ def most_points_scored
     away_player
   end
 end
+
+
+def winning_team
+
+  home_points = []
+  away_points = []
+  game_hash[:home][:players].select do |player_name, player_info|
+    home_points <<player_info[:points]
+  end
+
+  game_hash[:away][:players].select do |player_name, player_info|
+    away_points << player_info[:points]
+  end
+  home_total = home_points.sum
+  away_total = away_points.sum
+
+  if home_total > away_total
+  game_hash[:home][:team_name]
+
+  else
+  game_hash[:away][:team_name]
+  end
+  #[home_total, away_total].max
+end
+
+def player_with_longest_name
+  home_players = game_hash[:home][:players].keys
+  home_player = home_players.max_by(&:length)
+
+  away_players = game_hash[:away][:players].keys
+  away_player = away_players.max_by(&:length)
+
+  if home_player.length > away_player.length
+    home_player
+ else
+   away_player
+ end
+end
+
+
+def most_steals
+  max_home = 0
+  max_away = 0
+  home_player = ""
+  away_player = ""
+  game_hash[:home][:players].select do |player_name, player_info|
+      if max_home == 0
+        max_home = player_info[:steals]
+        home_player = player_name
+      elsif player_info[:steals] > max_home
+        max_home = player_info[:steals]
+        home_player = player_name
+    end
+  end
+  game_hash[:away][:players].select do |player_name, player_info|
+    if max_away == 0
+      max_away = player_info[:steals]
+      away_player = player_name
+    elsif player_info[:steals] > max_away
+      max_away = player_info[:steals]
+      away_player = player_name
+    end
+  end
+
+  if max_home > max_away
+    home_player
+  else
+    away_player
+  end
+end
+
+def long_name_steals_a_ton
+  if most_steals == player_with_longest_name
+    true
+ else
+   false
+ end
+end
