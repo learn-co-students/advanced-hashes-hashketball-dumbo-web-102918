@@ -61,289 +61,112 @@ def player_info(player_hash, numbers, shoes, point, rebound, assist, steal, bloc
   return player_hash
 end
 
+
 #build num_points_scored that takes in player and returns points
-#have to go thru the keys in each loop with if statements for the right key
-def num_points_scored(player_name)
-  num_points = 0
-  game_hash.each do |location, team_data|
-    #location is just home or away, team_data is all the data for home
-    team_data.each do |attribute, data|
-      #attribute goes thru team name, colors and players to get their values
-      #for team name, will get brooklyn or the other
-      #  for colors will get the array of colors
-      #for players will get whole hash, player name and all their stats
-       if attribute == :players
-         data.each do |name, stat_list|
-          # data_item would be player name, gets entire hash of stats for values
-           stat_list.each do |stat, value|
-             #looks into stats hash
-             #these are all the names of stats and all their values
-             if name == player_name && stat == :points
-              num_points = value
-             end
-           end
-         end
-       end
-    end
-  end
-  num_points
-end
+def num_points_scored(player)
+home_team = game_hash[:home][:players]
+away_team = game_hash[:away][:players]
 
-#same as above, cycling thru if statements in the keys for various loops
-def shoe_size(player_name)
-  shoe_size = 0
-  game_hash.each do |location, team_data|
-    #location is just home or away, team_data is all the data for home
-    team_data.each do |attribute, data|
-      #attribute goes thru team name, colors and players to get their values
-      #for team name, will get brooklyn or the other
-      #  for colors will get the array of colors
-      #for players will get whole hash, player name and all their stats
-       if attribute == :players
-         data.each do |data_item, stat_list|
-          # data_item would be player name, gets entire hash of stats for values
-           stat_list.each do |stat, value|
-             #looks into stats hash
-             #these are all the names of stats and all their values
-             if data_item == player_name && stat == :shoe
-              shoe_size = value
-             end
-           end
-         end
-       end
-    end
-  end
-  shoe_size
-end
-
-#this one tricky because name_of_team is on same level as :colors
-#so go up and use variable location, then actually name :colors in the path
-def team_colors (name_of_team)
-  colors_team = []
-  game_hash.each do |location, team_data|
-    #location is just home or away, team_data is all the data for home
-    team_data.each do |attribute, data|
-      #attribute goes thru team name, colors and players to get their values
-      #for team name, will get brooklyn or the other
-      #  for colors will get the array of colors
-      #for players will get whole hash, player name and all their stats
-        if data == name_of_team
-          colors_team = (game_hash[location][:colors])
-          #you use key that was above name of team and in its path
-          #so ok to call it location I think
-          #then you use colors as the key for this level
-        end
-      end
-    end
-    colors_team
-  end
-
-#another way is to just name the path, since you know for the two team_colors
-#that location will be either home or away, depending on team name
-def team_colors (name_of_team)
-
-  if name_of_team == "Charlotte Hornets"
-    game_hash[:away][:colors]
-
+  if home_team.keys.include?(player)
+    home_team[player][:points]
   else
-    game_hash[:home][:colors]
+    away_team[player][:points]
   end
-
 end
 
-#this one was normal
-def team_names
-  name_array = []
-  game_hash.each do |location, team_data|
-    #location is just home or away, team_data is all the data for home
-    team_data.each do |attribute, data|
-      #attribute goes thru team name, colors and players to get their values
-      #for team name, will get brooklyn or the other
-      #  for colors will get the array of colors
-      #for players will get whole hash, player name and all their stats
-        if attribute == :team_name
-          name_array.push(game_hash[location][:team_name])
-        end
+
+def shoe_size(player)
+  home_team = game_hash[:home][:players]
+  away_team = game_hash[:away][:players]
+
+    if home_team.keys.include?(player)
+      home_team[player][:shoe]
+    else
+      away_team[player][:shoe]
     end
   end
-  name_array
+
+  def team_colors(name)
+    if game_hash[:home][:team_name] == name
+      game_hash[:home][:colors]
+    else
+      game_hash[:away][:colors]
+    end
+  end
+
+def team_names
+  names = []
+  names << game_hash[:home][:team_name]
+  names << game_hash[:away][:team_name]
+  names
 end
-# here the problem is name of team is string and ruby can't loop thru it
-#so skip steps by calling team_data[:team_name] and team_data[:players]
-def player_numbers (team)
-  number_array = []
-  game_hash.each do |location, team_data|
-  #location is just home or away, team_data is all the data for home
-    if team_data[:team_name] == team
-      #can get value by calling hash[key]
-      # using team_data[:team_name] skips attribute, data loop which was causing problems becuase
-      #can't loop thru the data string
-      team_data[:players].each do |data_item, stat_list|
-          # data_item would be player name, gets entire hash of stats for values
-          #can skip |stat, value| loop and just say stat_list[:number] as we know
-          #we are can get value by calling hash[key]
-         number_array << stat_list[:number]
+
+def player_numbers(name)
+    jerseys = []
+    home_players = game_hash[:home][:players]
+    away_players =  game_hash[:away][:players]
+
+    if game_hash[:home][:team_name] == name
+      home_players.map do |player, stats_info|
+
+        stats_info.select do |stats_name, stats_value|
+           if stats_name == :number
+              jerseys << stats_value
+           end
+        end
+      end
+
+    else
+      away_players.map do |player, stats_info|
+
+        stats_info.select do |stats_name, stats_value|
+           if stats_name == :number
+              jerseys << stats_value
+            end
+        end
       end
     end
-  end
-  number_array
+    jerseys
 end
 
+def player_stats(player)
+  home_team = game_hash[:home][:players]
+  away_team = game_hash[:away][:players]
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-# #another way made a function for team_stats which you calla nd then use fetch for team_name
-# def player_numbers(team_name)
-#   #find is select but only returns first element for which is true
-#   #fetch(key_name): get the value if the key exist
-#
-#   find_numbers = team_stats.find {|team| team.fetch(:team_name) == team_name}
-#   find_numbers[:players].collect do |player|
-#     player[:number]
-#   end
-# end
-#
-# def team_stats
-#   #get multiple non-sequential values from hash , use values_at
-#   home_team = game_hash.values_at(:home)
-#   away_team = game_hash.values_at(:away)
-#   total_team_stats = home_team + away_team
-#   total_team_stats
-# end
-
-#fetch(key_name): get the value if the key exists, raise a KeyError if it doesn't
-#fetch(key_name, default_value): get the value if the key exists, return default_value otherwise
-#fetch(key_name) { |key| "default" }: get the value if the key exists, otherwise run the supplied block and return the value.
-#Each one should be used as the situation requires, but #fetch is very feature-rich and can handle many cases depending on how it's used. For that reason I tend to prefer it over accessing keys with #[].
-
-
-def player_stats(name_of_player)
-  game_hash.keys.each do |team_info|
-    if game_hash[team_info][:players].keys.include?(name_of_player)
-      return game_hash[team_info][:players][name_of_player]
+    if home_team.keys.include?(player)
+      home_team[player]
+    else
+      away_team[player]
     end
-  end
 end
-
-
 
 def big_shoe_rebounds
-   largest_size = 0
-   rebound_number = 0
-   game_hash.each do |location, team_data|
-#       #location is just home or away, team_data is all the data for home
-      team_data.each do |attribute, data|
-#         #attribute goes thru team name, colors and players to get their values
-#         #for team name, will get brooklyn or the other
-#         #  for colors will get the array of colors
-#         #for players will get whole hash, player name and all their stats
-         if attribute == :players
-           data.each do |name, stat_list|
-#             # data_item would be player name, gets entire hash of stats for values
-              stat_list.each do |stat, value|
-#                #looks into stats hash
-#                #these are all the names of stats and all their values
-                 if stat == :shoe
-                   if largest_size = 0
-                     largest_size = value
-                     #this is the first initialization
-                     rebound_number = game_hash[location][:players][name][:rebounds]
-
-                   elsif value > largest_size
-                     largest_size = value
-                      rebound_number = game_hash[location][:players][name][:rebounds]
-                   end
-                end
-             end
-           end
-        end
-      end
+  max_home = 0
+  max_away = 0
+  home_rebounds = 0
+  away_rebounds = 0
+  game_hash[:home][:players].select do |player_name, player_info|
+      if max_home == 0
+        max_home = player_info[:shoe]
+        home_rebounds = player_info[:rebounds]
+      elsif player_info[:shoe] > max_home
+        max_home = player_info[:shoe]
+        home_rebounds = player_info[:rebounds]
     end
-    rebound_number
- end
+  end
+  game_hash[:away][:players].select do |player_name, player_info|
+    if max_away == 0
+      max_away = player_info[:shoe]
+      away_rebounds = player_info[:rebounds]
+    elsif player_info[:shoe] > max_away
+      max_away = player_info[:shoe]
+      away_rebounds = player_info[:rebounds]
+    end
+  end
 
-
-
-
-
-
-
-
-
-
-
-#doesnt work , gets undefined local variable for object
-# def player_stats (name_of_player)
-# #statistics ={}
-# game_hash.each do |location, team_data|
-#   #location is just home or away, team_data is all the data for home
-#   team_data.each do |attribute, data|
-#     #attribute goes thru team name, colors and players to get their values
-#     #for team name, will get brooklyn or the other
-#     #  for colors will get the array of colors
-#     #for players will get whole hash, player name and all their stats
-#       if attribute == :players
-#         data.each do |data_item, stat_list|
-#         # data_item would be player name, gets entire hash of stats for values
-#           if data_item == name_of_player
-#             return stat_list
-#             # stat_list.each do |stat, value|
-#             #   #looks into stats hash
-#             #   #these are all the names of stats and all their values
-#             #   if name == name_of_player
-#             #     statistics[stat] = value
-#             #end
-#           end
-#         end
-#       end
-#    end
-#   #statistics
-# end
-
-
-
-
-
-
-
-
-#none of this worked
-#?
-# def player_numbers(name_of_team)
-#   jersey_array = []
-#   game_hash.each do |location, team_data|
-#     #location is just home or away, team_data is all the data for home
-
-#       team_data.each do |attribute, data|
-#         #attribute goes thru team name, colors and players to get their values
-#         #for team name, will get brooklyn or the other
-#         #  for colors will get the array of colors
-#         #for players will get whole hash, player name and all their s
-          #if data == name_of-team
-#         this was a problem as can't loop thru string  and name_of -team is a string
-#           data.each do |data_item, stat_list|
-#             # data_item would be player name, gets entire hash of stats for values
-#             stat_list.each do |stat, value|
-#               #looks into stats hash
-#               #these are all the names of stats and all their values
-#               if stat == :number
-#                 jersey_array.push(value)
-#               end
-#             end
-#           end
-#         end
-#       end
-#     end
-#   jersey_array
-# end
+  if max_home > max_away
+    home_rebounds
+  else
+    away_rebounds
+  end
+end
