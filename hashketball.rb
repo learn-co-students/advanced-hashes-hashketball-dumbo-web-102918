@@ -170,3 +170,35 @@ def big_shoe_rebounds
     away_rebounds
   end
 end
+
+
+def most_points_scored
+  max_home = 0
+  max_away = 0
+  home_player = ""
+  away_player = ""
+  game_hash[:home][:players].select do |player_name, player_info|
+      if max_home == 0
+        max_home = player_info[:points]
+        home_player = player_name
+      elsif player_info[:points] > max_home
+        max_home = player_info[:points]
+        home_player = player_name
+    end
+  end
+  game_hash[:away][:players].select do |player_name, player_info|
+    if max_away == 0
+      max_away = player_info[:points]
+      away_player = player_name
+    elsif player_info[:points] > max_away
+      max_away = player_info[:points]
+      away_player = player_name
+    end
+  end
+
+  if max_home > max_away
+    home_player
+  else
+    away_player
+  end
+end
